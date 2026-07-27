@@ -1,11 +1,3 @@
-# from .utils_pack import ResolutionSelectorNode as ResolutionSelector
-# # 必须指定前端文件夹
-# WEB_DIRECTORY = "./web" 
-
-# NODE_CLASS_MAPPINGS = {
-#     "UtilsPack": ResolutionSelector,
-# }
-
 WEB_DIRECTORY = "./web" 
 
 from .utils_pack import NODE_CLASS_MAPPINGS as nodes_mappings
