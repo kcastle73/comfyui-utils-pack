@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 class ResolutionSelectorNode:
     @classmethod
@@ -21,41 +22,48 @@ class ResolutionSelectorNode:
     def execute(self, resolution, width, height):
         return (width,height, width * height)
 
-class GetSystemDateNode:
+class GetFormattedSystemDateNode:
     @classmethod
     def INPUT_TYPES(cls):
-        return {}
+        return {
+            "required": {
+                "format_str": ("STRING", {"default": "%Y-%m-%d %H:%M:%S"}),
+            }
+        }
 
     RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("date",)
     FUNCTION = "execute"
     CATEGORY = "UtilsPack"
 
-    def execute(self):
-        return (datetime.now().strftime("%Y-%m-%d"),)
+    def execute(self, format_str):
+        return (datetime.now().strftime(format_str),)
 
-class GetCurrentTimeNode:
+class ExtractFileNameNode:
     @classmethod
     def INPUT_TYPES(cls):
-        return {}
+        return {
+            "required": {
+                "file_path": ("STRING", {"default": "", "multiline": False, "label": "File Path"}),
+            }
+        }
 
     RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("time",)
+    RETURN_NAMES = ("filename",)
     FUNCTION = "execute"
     CATEGORY = "UtilsPack"
 
-    def execute(self):
-        return (datetime.now().strftime("%H%M%S"),)
+    def execute(self, file_path):
+        return (os.path.splitext(os.path.basename(file_path))[0],)
 
 
 NODE_CLASS_MAPPINGS = {
     "ResolutionSelectorNode": ResolutionSelectorNode,
-    "GetSystemDateNode": GetSystemDateNode,  
-    "GetCurrentTimeNode": GetCurrentTimeNode, 
+    "GetFormattedSystemDateNode": GetFormattedSystemDateNode,  
+    "ExtractFileNameNode": ExtractFileNameNode, 
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "ResolutionSelectorNode": "Resolution Selector",
-    "GetSystemDateNode": "Get System Date",   
-    "GetCurrentTimeNode": "Get Current Time", 
+    "GetFormattedSystemDateNode": "Get Formatted System Date",   
+    "ExtractFileNameNode": "Extract File Name", 
 }
